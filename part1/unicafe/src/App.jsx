@@ -1,24 +1,33 @@
 import { useState } from 'react'
 
 const Header = (props) => <h1>{props.title}</h1>
-const StatisticLine = (props) => <div>{props.text} {props.value} </div>
+const StatisticLine = (props) => {
+  return (
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.value}</td>
+    </tr>
+  )
+} 
 const Statistics = (props) => {
   const { good, neutral, bad } = props
   const sum = good + neutral + bad
   if (sum == 0) {
     return (
-      <div>No feedback given </div>
+      <p>No feedback given </p>
     )
   } else {
     return (
-      <div>
-        <StatisticLine text={"good"} value={good} />
-        <StatisticLine text={"neutral"} value={neutral} />
-        <StatisticLine text={"bad"} value={bad} />
-        <StatisticLine text={"all"} value={sum} />
-        <StatisticLine text={"average"} value={(good - bad) / sum} />
-        <StatisticLine text={"positive"} value={`${(good / sum * 100) } %`} />
-      </div>
+      <table>
+        <tbody>
+          <StatisticLine text={"good"} value={good} />
+          <StatisticLine text={"neutral"} value={neutral} />
+          <StatisticLine text={"bad"} value={bad} />
+          <StatisticLine text={"all"} value={sum} />
+          <StatisticLine text={"average"} value={((good - bad) / sum).toFixed(1)} />
+          <StatisticLine text={"positive"} value={`${(good / sum * 100).toFixed(1)} %`} />
+        </tbody>
+      </table>
     )
   }
 }
