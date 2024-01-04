@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const Header = (props) => <h1>{props.title}</h1>
-const StatisticLine = (props) => <div>{props.name} {props.count} {props.add} </div>
+const StatisticLine = (props) => <div>{props.text} {props.value} </div>
 const Statistics = (props) => {
   const { good, neutral, bad } = props
   const sum = good + neutral + bad
@@ -12,12 +12,12 @@ const Statistics = (props) => {
   } else {
     return (
       <div>
-        <StatisticLine name={"good"} count={good} />
-        <StatisticLine name={"neutral"} count={neutral} />
-        <StatisticLine name={"bad"} count={bad} />
-        <StatisticLine name={"all"} count={sum} />
-        <StatisticLine name={"average"} count={(good - bad) / sum} />
-        <StatisticLine name={"positive"} count={`${(good / sum * 100) } %`} />
+        <StatisticLine text={"good"} value={good} />
+        <StatisticLine text={"neutral"} value={neutral} />
+        <StatisticLine text={"bad"} value={bad} />
+        <StatisticLine text={"all"} value={sum} />
+        <StatisticLine text={"average"} value={(good - bad) / sum} />
+        <StatisticLine text={"positive"} value={`${(good / sum * 100) } %`} />
       </div>
     )
   }
