@@ -5,16 +5,22 @@ const StatisticLine = (props) => <div>{props.name} {props.count} {props.add} </d
 const Statistics = (props) => {
   const { good, neutral, bad } = props
   const sum = good + neutral + bad
-  return (
-    <div>
-      <StatisticLine name={"good"} count={good} />
-      <StatisticLine name={"neutral"} count={neutral} />
-      <StatisticLine name={"bad"} count={bad} />
-      <StatisticLine name={"all"} count={sum} />
-      <StatisticLine name={"average"} count={(good - bad) / sum} />
-      <StatisticLine name={"positive"} count={`${(good / sum * 100) } %`} />
-    </div>
-  )
+  if (sum == 0) {
+    return (
+      <div>No feedback given </div>
+    )
+  } else {
+    return (
+      <div>
+        <StatisticLine name={"good"} count={good} />
+        <StatisticLine name={"neutral"} count={neutral} />
+        <StatisticLine name={"bad"} count={bad} />
+        <StatisticLine name={"all"} count={sum} />
+        <StatisticLine name={"average"} count={(good - bad) / sum} />
+        <StatisticLine name={"positive"} count={`${(good / sum * 100) } %`} />
+      </div>
+    )
+  }
 }
 const Button = (props) => <button onClick={props.handleClick}> {props.text} </button>
 const Buttons = (props) => {
