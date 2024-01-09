@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Persons from './components/Persons'
 import InputForm from './components/InputForm'
+import _isEqual from 'lodash/isEqual'
 
 const Header = ({ text }) => <h2>{text}</h2>
 
@@ -17,9 +18,16 @@ const App = () => {
   // Event handlers
   const addPerson = (event) => {
     event.preventDefault()
+    
     const newPerson = { name: newName }
-    setPersons(persons.concat(newPerson))
-    setNewName(emptyString)
+    const containSamePerson = persons.some( person => _isEqual(person, newPerson))
+    
+    if (containSamePerson) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      setPersons(persons.concat(newPerson))
+      setNewName(emptyString)
+    }
   }
   const handleInputNameChange = (event) => {
     setNewName(event.target.value)
