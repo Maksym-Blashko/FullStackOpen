@@ -1,22 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import NewPersonInputForm from './components/NewPersonInputForm'
 import FilterField from './components/FilterField'
 import _isEqual from 'lodash/isEqual'
+import axios from 'axios'
 
 const Header = ({ text }) => <h2>{text}</h2>
 
 const App = () => {
-  const initialPhonebook = [
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]
+  // Variables
   const emptyString = ''
+  const endpoint = 'http://localhost:3001/persons'
 
   // States
-  const [persons, setPersons] = useState(initialPhonebook)
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState(emptyString)
   const [newNumber, setNewNumber] = useState(emptyString)
   const [filterName, setFilterName] = useState(emptyString)
@@ -55,6 +52,14 @@ const App = () => {
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(filterName.toLowerCase())
   )
+
+  useEffect(() => {
+    axios
+      .get(endpoint)
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
 
   return (
     <div>
