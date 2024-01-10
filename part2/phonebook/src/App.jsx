@@ -32,9 +32,16 @@ const App = () => {
     if (containSamePerson) {
       alert(`${newName} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(newPerson))
-      setNewName(emptyString)
-      setNewNumber(emptyString)
+      axios
+        .post(endpoint, newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName(emptyString)
+          setNewNumber(emptyString)
+    })
+      // setPersons(persons.concat(newPerson))
+      // setNewName(emptyString)
+      // setNewNumber(emptyString)
     }
   }
   const handleInputNameChange = (event) => {
@@ -53,6 +60,7 @@ const App = () => {
     person.name.toLowerCase().includes(filterName.toLowerCase())
   )
 
+  // Load json file with persons from server
   useEffect(() => {
     axios
       .get(endpoint)
