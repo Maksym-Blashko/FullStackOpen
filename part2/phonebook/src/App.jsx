@@ -3,14 +3,13 @@ import Persons from './components/Persons'
 import NewPersonInputForm from './components/NewPersonInputForm'
 import FilterField from './components/FilterField'
 import _isEqual from 'lodash/isEqual'
-import axios from 'axios'
+import personService from './services/PersonService'
 
 const Header = ({ text }) => <h2>{text}</h2>
 
 const App = () => {
   // Variables
   const emptyString = ''
-  const endpoint = 'http://localhost:3001/persons'
 
   // States
   const [persons, setPersons] = useState([])
@@ -32,16 +31,13 @@ const App = () => {
     if (containSamePerson) {
       alert(`${newName} is already added to phonebook`)
     } else {
-      axios
-        .post(endpoint, newPerson)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+      personService
+        .create(newPerson)
+        .then(person => {
+          setPersons(persons.concat(person))
           setNewName(emptyString)
           setNewNumber(emptyString)
-    })
-      // setPersons(persons.concat(newPerson))
-      // setNewName(emptyString)
-      // setNewNumber(emptyString)
+        })
     }
   }
   const handleInputNameChange = (event) => {
@@ -62,10 +58,10 @@ const App = () => {
 
   // Load json file with persons from server
   useEffect(() => {
-    axios
-      .get(endpoint)
-      .then(response => {
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(persons => {
+        setPersons(persons)
       })
   }, [])
 
