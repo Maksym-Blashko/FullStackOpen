@@ -1,11 +1,11 @@
 const Persons = ({ persons }) => {
     return (
-      <div>
-        {persons.map( (person, i) =>
-          <p key={i}> {person.name} {person.number}</p>
-        )}
-      </div>
+        <div>
+            {persons.map(person =>
+                <div key={person.id}> {person.name} {person.number}</div>
+            )}
+        </div>
     )
-  }
+}
 
-  export default Persons
+export default Persons
