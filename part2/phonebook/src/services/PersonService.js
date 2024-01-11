@@ -5,25 +5,26 @@ const endpoint = 'http://localhost:3001/persons'
 const getAll = () => {
     return axios
         .get(endpoint)
-        .then(response => {
-            return response.data
-        })
+        .then(response => response.data)
 }
 
 const create = newObject => {
     return axios
         .post(endpoint, newObject)
-        .then(response => {
-            return response.data
-        })
+        .then(response => response.data)
 }
 
-const update = (id, newObject) => {
+const updatePerson = (id, newObject) => {
     return axios
         .put(`${endpoint}/${id}`, newObject)
-        .then(response => {
-            return response.data
-        })
+        .then(response => response.data)
 }
 
-export default { getAll, create, update }
+const deletePerson = id => {
+    return axios
+        .delete(`${endpoint}/${id}`)
+        .then(response => console.log(response.data))
+
+}
+
+export default { getAll, create, updatePerson, deletePerson }

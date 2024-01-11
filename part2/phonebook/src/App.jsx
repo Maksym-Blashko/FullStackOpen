@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import NewPersonInputForm from './components/NewPersonInputForm'
 import FilterField from './components/FilterField'
-import _isEqual from 'lodash/isEqual'
 import personService from './services/PersonService'
 
 const Header = ({ text }) => <h2>{text}</h2>
@@ -21,15 +20,26 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    const newPerson = { name: newName, number: newNumber, id: persons.length + 1 }
-    const containSamePerson = persons.some(person => {
-      const { id, ...personWithoutId } = person
-      const { id: newPersonId, ...newPersonWithoutId } = newPerson
-      return _isEqual(personWithoutId, newPersonWithoutId)
-    })
+    const newID = Math.max(...persons.map(person => person.id)) + 1
+    const newPerson = { name: newName, number: newNumber, id: newID }
 
-    if (containSamePerson) {
+    const samePerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
+
+    if (samePerson && samePerson.number === newNumber) {
       alert(`${newName} is already added to phonebook`)
+
+    } else if (samePerson && samePerson.number !== newNumber) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const personForUpdate = { name: newName, number: newNumber }
+        personService
+          .updatePerson(samePerson.id, personForUpdate)
+          .then(changedPerson => {
+            setPersons(persons.map(n => n.id !== samePerson.id ? n : changedPerson))
+            setNewName(emptyString)
+            setNewNumber(emptyString)
+          })
+      }
+
     } else {
       personService
         .create(newPerson)
@@ -38,6 +48,14 @@ const App = () => {
           setNewName(emptyString)
           setNewNumber(emptyString)
         })
+    }
+  }
+  const handleDeletePerson = (id) => {
+    const person = persons.find(n => n.id === id)
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      personService
+        .deletePerson(person.id)
+      setPersons(persons.filter(person => person.id !== id))
     }
   }
   const handleInputNameChange = (event) => {
@@ -80,7 +98,7 @@ const App = () => {
         inputValueName={newName}
         inputValueNumber={newNumber} />
       <Header text='Numbers' />
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} deleteButton={handleDeletePerson} />
     </div>
   )
 }
