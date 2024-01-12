@@ -23,7 +23,7 @@ const updatePerson = (id, newObject) => {
 const deletePerson = id => {
     return axios
         .delete(`${endpoint}/${id}`)
-        .then(response => console.log(response.data))
+        .then(response => response.data)
 
 }
 

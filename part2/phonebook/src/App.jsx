@@ -3,6 +3,8 @@ import Persons from './components/Persons'
 import NewPersonInputForm from './components/NewPersonInputForm'
 import FilterField from './components/FilterField'
 import personService from './services/PersonService'
+import Notification from './components/Notification'
+import './index.css'
 
 const Header = ({ text }) => <h2>{text}</h2>
 
@@ -15,6 +17,7 @@ const App = () => {
   const [newName, setNewName] = useState(emptyString)
   const [newNumber, setNewNumber] = useState(emptyString)
   const [filterName, setFilterName] = useState(emptyString)
+  const [message, setMessage] = useState(null)
 
   // Event handlers
   const addPerson = (event) => {
@@ -37,6 +40,12 @@ const App = () => {
             setPersons(persons.map(n => n.id !== samePerson.id ? n : changedPerson))
             setNewName(emptyString)
             setNewNumber(emptyString)
+            setMessage({text:`Number ${changedPerson.number} updated`, type: 'success'})
+            setTimeout(() => {setMessage(null)}, 3000)
+          })
+          .catch(error => {
+            setMessage({text:`Error updating person: ${error}`, type: 'error'})
+            setTimeout(() => {setMessage(null)}, 3000)
           })
       }
 
@@ -47,6 +56,12 @@ const App = () => {
           setPersons(persons.concat(person))
           setNewName(emptyString)
           setNewNumber(emptyString)
+          setMessage({text:`Added ${person.name}`, type: 'success'})
+          setTimeout(() => {setMessage(null)}, 3000)
+        })
+        .catch(error => {
+          setMessage({text:`Error creating person: ${error}`, type: 'error'})
+          setTimeout(() => {setMessage(null)}, 3000)
         })
     }
   }
@@ -55,7 +70,15 @@ const App = () => {
     if (window.confirm(`Delete ${person.name} ?`)) {
       personService
         .deletePerson(person.id)
-      setPersons(persons.filter(person => person.id !== id))
+        .then(person => {
+          setPersons(persons.filter(person => person.id !== id))
+          setMessage({text:`Person ${person.name} removed`, type: 'success'})
+          setTimeout(() => {setMessage(null)}, 3000)
+        })
+        .catch(error => {
+          setMessage({text:`Error deleting person: ${error}`, type: 'error'})
+          setTimeout(() => {setMessage(null)}, 3000)
+        })
     }
   }
   const handleInputNameChange = (event) => {
@@ -81,11 +104,16 @@ const App = () => {
       .then(persons => {
         setPersons(persons)
       })
+      .catch(error => {
+        setMessage({text:`Error getting list of persons: ${error}`, type: 'error'})
+        setTimeout(() => {setMessage(null)}, 3000)
+      })
   }, [])
 
   return (
     <div>
       <Header text='Phonebook' />
+      <Notification message={message} />
       <FilterField
         onChange={handleInputFilterName}
         onClick={handleClearFilterField}
