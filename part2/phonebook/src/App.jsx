@@ -126,7 +126,7 @@ const App = () => {
         inputValueName={newName}
         inputValueNumber={newNumber} />
       <Header text='Numbers' />
-      <Persons persons={filteredPersons} deleteButton={handleDeletePerson} />
+      <Persons persons={filteredPersons} onDeletePerson={handleDeletePerson} />
     </div>
   )
 }
