@@ -1,3 +1,4 @@
+import Weather from "./Weather"
 
 const Languages = ({ obj }) => {
     const languages = Object.values(obj)
@@ -7,10 +8,6 @@ const Languages = ({ obj }) => {
 }
 
 const CountryDetails = ({ country }) => {
-    if (country === null) {
-        return null
-    }
-
     return (
         <div>
             <h1>{country.name.common}</h1>
@@ -19,6 +16,7 @@ const CountryDetails = ({ country }) => {
             <p><strong>languages:</strong></p>
             <Languages obj={country.languages} />
             <img className='flag' src={country.flags.png} alt={country.flags.alt} />
+            <Weather country={country} />
         </div>
     )
 }
