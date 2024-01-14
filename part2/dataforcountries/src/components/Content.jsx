@@ -1,11 +1,27 @@
+import { useState, useEffect } from 'react'
 import CountryDetails from './CountryDetails'
 
-const ListOfCountries = ({ countries }) => {
-    const listItems = countries.map((item, index) => <div key={index}>{item.name.common}</div>)
-    return <div>{listItems} </div>
+
+const ListOfCountries = ({ countries, onShowDetails }) => {
+    const listItems = countries.map((item, index) => {
+        return <div key={index}>{item.name.common} <button onClick={() => onShowDetails(item)}>show</button></div>
+    })
+    return <div>{listItems}</div>
 }
 
 const Content = ({ countries, searchText }) => {
+    // States
+    const [selectedCountry, setSelectedCountry] = useState(null)
+
+    // Event henlers
+    const handleSelectedContry = (country) => {
+        setSelectedCountry(country)
+    }
+    useEffect(() => {
+        // Reset selected country when searchText changes
+        setSelectedCountry(null);
+      }, [searchText])
+
     if (searchText.length === 0) {
         return null
     }
@@ -18,7 +34,10 @@ const Content = ({ countries, searchText }) => {
         case (count === 1):
             return <CountryDetails country={filteredCountries[0]} />
         case (count > 1 && count < 11):
-            return <ListOfCountries countries={filteredCountries} />
+            if (selectedCountry !== null) {
+                return <CountryDetails country={selectedCountry} />
+            }
+            return <ListOfCountries countries={filteredCountries} onShowDetails={handleSelectedContry} />
         case (count > 10):
             return <div>Too many matches, specify another filter</div>
         default:
