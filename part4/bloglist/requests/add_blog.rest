@@ -1,9 +1,0 @@
-POST http://localhost:3001/api/blogs
-Content-Type: application/json
-
-{
-  "title": "Some Blog",
-  "author": "Blashko Maksym",
-  "url": "https://google.com",
-  "likes": 5
-}
