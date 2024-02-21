@@ -60,6 +60,7 @@ const listWithOneBlog = [
     }
 ]
 
+
 // MOC Data for favorite blog
 const favoriteFromManyBlogs = {
     title: "Canonical string reduction",
@@ -73,9 +74,23 @@ const favoriteFromOneBlog = {
     likes: 5
 }
 
+
+// MOC Data for most blogs
+const mostFromManyBlogs = {
+    author: "Robert C. Martin",
+    blogs: 3
+}
+
+const mostFromOneBlog = {
+    author: 'Edsger W. Dijkstra',
+    blogs: 1
+}
+
 module.exports = {
     blogs,
     listWithOneBlog,
     favoriteFromManyBlogs,
-    favoriteFromOneBlog
+    favoriteFromOneBlog,
+    mostFromManyBlogs,
+    mostFromOneBlog
 }
