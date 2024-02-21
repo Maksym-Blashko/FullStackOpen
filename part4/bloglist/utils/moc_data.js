@@ -76,14 +76,26 @@ const favoriteFromOneBlog = {
 
 
 // MOC Data for most blogs
-const mostFromManyBlogs = {
+const mostBlogsFromManyBlogs = {
     author: "Robert C. Martin",
     blogs: 3
 }
 
-const mostFromOneBlog = {
+const mostBlogsFromOneBlog = {
     author: 'Edsger W. Dijkstra',
     blogs: 1
+}
+
+
+// MOC Data for most likes
+const mostLikesFromManyBlogs = {
+    author: "Edsger W. Dijkstra",
+    likes: 17
+}
+
+const mostLikesFromOneBlog = {
+    author: 'Edsger W. Dijkstra',
+    likes: 5
 }
 
 module.exports = {
@@ -91,6 +103,8 @@ module.exports = {
     listWithOneBlog,
     favoriteFromManyBlogs,
     favoriteFromOneBlog,
-    mostFromManyBlogs,
-    mostFromOneBlog
+    mostBlogsFromManyBlogs,
+    mostBlogsFromOneBlog,
+    mostLikesFromManyBlogs,
+    mostLikesFromOneBlog
 }
