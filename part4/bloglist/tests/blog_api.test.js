@@ -51,7 +51,7 @@ test('should create a new blog post', async () => {
   assert.strictEqual(totalBlogs, mocData.listWithTwoBlogs.length + 1)
 })
 
-test.only('should set default value of likes to 0 if not provided', async () => {
+test('should set default value of likes to 0 if not provided', async () => {
   const blog = mocData.blogWithuotLikesProperty
 
   const response = await api
@@ -60,6 +60,28 @@ test.only('should set default value of likes to 0 if not provided', async () => 
     .expect(201)
 
   assert.strictEqual(response.body.likes, 0, 'Default value of likes should be 0')
+})
+
+test.only('should respond with status code 400 if title is missing', async () => {
+  const blog = mocData.blogWithuotTitleProperty
+
+  const response = await api
+    .post('/api/blogs')
+    .send(blog)
+    .expect(400)
+
+  assert.strictEqual(response.body.error, 'Bad Request: Missing title')
+})
+
+test.only('should respond with status code 400 if url is missing', async () => {
+  const blog = mocData.blogWithuotUrlProperty
+
+  const response = await api
+    .post('/api/blogs')
+    .send(blog)
+    .expect(400)
+
+  assert.strictEqual(response.body.error, 'Bad Request: Missing url')
 })
 
 after(async () => {

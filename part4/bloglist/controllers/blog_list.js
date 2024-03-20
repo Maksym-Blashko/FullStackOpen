@@ -1,7 +1,7 @@
 const blogListRouter = require('express').Router()
 const Blog = require('../models/blog')
 
-blogListRouter.get('/', (request, response) => {
+blogListRouter.get('/', (request, response, next) => {
     Blog
         .find({})
         .then(blogs => {
@@ -10,7 +10,14 @@ blogListRouter.get('/', (request, response) => {
         .catch(error => next(error))
 })
 
-blogListRouter.post('/', (request, response) => {
+blogListRouter.post('/', (request, response, next) => {
+    if (request.body.title === undefined) {
+        return response.status(400).json({ error: 'Bad Request: Missing title' })
+    }    
+    if (request.body.url === undefined) {
+        return response.status(400).json({ error: 'Bad Request: Missing url' })
+    }    
+
     const blog = new Blog({
         title: request.body.title,
         author: request.body.author,

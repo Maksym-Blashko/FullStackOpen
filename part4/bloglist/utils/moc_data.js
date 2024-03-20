@@ -121,6 +121,18 @@ const blogWithuotLikesProperty = {
     author: 'Edsger W. Dijkstra'
 }
 
+const blogWithuotTitleProperty = {
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    likes: 2
+}
+
+const blogWithuotUrlProperty = {
+    title: "Type wars",
+    author: "Robert C. Martin",
+    likes: 2
+}
+
 module.exports = {
     blogs,
     listWithOneBlog,
@@ -131,5 +143,7 @@ module.exports = {
     mostBlogsFromOneBlog,
     mostLikesFromManyBlogs,
     mostLikesFromOneBlog,
-    blogWithuotLikesProperty
+    blogWithuotLikesProperty,
+    blogWithuotTitleProperty,
+    blogWithuotUrlProperty
 }
