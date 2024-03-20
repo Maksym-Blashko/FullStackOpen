@@ -33,25 +33,33 @@ test('the unique identifier property of the blog posts is named "id"', async () 
   assert.ok(jsonBlog.hasOwnProperty('id'), 'Property "id" not found')
 })
 
-test.only('should create a new blog post', async () => {
-  const newBlogData = {
-    title: 'Test Blog Post',
-    author: 'Unique Author'
-  }
+test('should create a new blog post', async () => {
+  const blog = mocData.listWithOneBlog[0]
 
   const response = await api
     .post('/api/blogs')
-    .send(newBlogData)
+    .send(blog)
     .expect(201)
 
   const createdBlog = await Blog.findById(response.body.id)
   assert.ok(createdBlog, 'Blog post not found in the database')
 
-  assert.strictEqual(createdBlog.title, newBlogData.title)
-  assert.strictEqual(createdBlog.author, newBlogData.author)
+  assert.strictEqual(createdBlog.title, blog.title)
+  assert.strictEqual(createdBlog.author, blog.author)
 
   const totalBlogs = await Blog.countDocuments()
   assert.strictEqual(totalBlogs, mocData.listWithTwoBlogs.length + 1)
+})
+
+test.only('should set default value of likes to 0 if not provided', async () => {
+  const blog = mocData.blogWithuotLikesProperty
+
+  const response = await api
+    .post('/api/blogs')
+    .send(blog)
+    .expect(201)
+
+  assert.strictEqual(response.body.likes, 0, 'Default value of likes should be 0')
 })
 
 after(async () => {
