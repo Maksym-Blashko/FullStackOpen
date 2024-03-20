@@ -27,10 +27,31 @@ test('there are two blogs as json', async () => {
   assert.strictEqual(response.body.length, 2)
 })
 
-test.only('the unique identifier property of the blog posts is named "id"', async () => {
+test('the unique identifier property of the blog posts is named "id"', async () => {
   const blog = new Blog(mocData.listWithOneBlog[0])
   const jsonBlog = blog.toJSON()
   assert.ok(jsonBlog.hasOwnProperty('id'), 'Property "id" not found')
+})
+
+test.only('should create a new blog post', async () => {
+  const newBlogData = {
+    title: 'Test Blog Post',
+    author: 'Unique Author'
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlogData)
+    .expect(201)
+
+  const createdBlog = await Blog.findById(response.body.id)
+  assert.ok(createdBlog, 'Blog post not found in the database')
+
+  assert.strictEqual(createdBlog.title, newBlogData.title)
+  assert.strictEqual(createdBlog.author, newBlogData.author)
+
+  const totalBlogs = await Blog.countDocuments()
+  assert.strictEqual(totalBlogs, mocData.listWithTwoBlogs.length + 1)
 })
 
 after(async () => {
