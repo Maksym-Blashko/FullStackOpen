@@ -18,13 +18,19 @@ beforeEach(async () => {
   await blog.save()
 })
 
-test.only('there are two blogs as json', async () => {
+test('there are two blogs as json', async () => {
   const response = await api
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
 
   assert.strictEqual(response.body.length, 2)
+})
+
+test.only('the unique identifier property of the blog posts is named "id"', async () => {
+  const blog = new Blog(mocData.listWithOneBlog[0])
+  const jsonBlog = blog.toJSON()
+  assert.ok(jsonBlog.hasOwnProperty('id'), 'Property "id" not found')
 })
 
 after(async () => {
