@@ -84,6 +84,17 @@ describe('API tests', () => {
   })
 })
 
+test.only('should delete a blog post', async () => {
+  const blog = mocData.listWithTwoBlogs[0]
+
+  await api
+  .delete(`/api/blogs/${blog._id}`)
+  .expect(204)
+
+  const totalBlogs = await Blog.countDocuments()
+  assert.strictEqual(totalBlogs, mocData.listWithTwoBlogs.length - 1)  
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
