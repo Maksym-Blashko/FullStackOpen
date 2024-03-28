@@ -8,7 +8,7 @@ const mocData = require('../utils/moc_data')
 
 const api = supertest(app)
 
-describe('API tests', () => {
+describe('API tests Blog', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
     await Blog.insertMany(mocData.listWithTwoBlogs)
