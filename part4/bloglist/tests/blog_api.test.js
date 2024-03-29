@@ -4,14 +4,14 @@ const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-const mocData = require('../utils/moc_data')
+const mocData = require('./test_moc_data')
 
 const api = supertest(app)
 
 describe('API tests Blog', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
-    await Blog.insertMany(mocData.listWithTwoBlogs)
+    await Blog.insertMany(mocData.blogsData.listWithTwoBlogs)
   })
 
   describe('GET /api/blogs', () => {
@@ -24,13 +24,13 @@ describe('API tests Blog', () => {
 
     test('all blogs are reterned', async () => {
       const response = await api.get('/api/blogs')
-      assert.strictEqual(response.body.length, mocData.listWithTwoBlogs.length)
+      assert.strictEqual(response.body.length, mocData.blogsData.listWithTwoBlogs.length)
     })
   })
 
   describe('Blog post properties', () => {
     test('the unique identifier property of the blog posts is named "id"', async () => {
-      const blog = new Blog(mocData.listWithOneBlog[0])
+      const blog = new Blog(mocData.blogsData.listWithOneBlog[0])
       const jsonBlog = blog.toJSON()
       assert.ok(jsonBlog.hasOwnProperty('id'), 'Property "id" not found')
     })
@@ -38,7 +38,7 @@ describe('API tests Blog', () => {
 
   describe('POST /api/blogs', () => {
     test('should create a new blog post', async () => {
-      const blog = mocData.listWithOneBlog[0]
+      const blog = mocData.blogsData.listWithOneBlog[0]
 
       const response = await api
         .post('/api/blogs')
@@ -52,11 +52,11 @@ describe('API tests Blog', () => {
       assert.strictEqual(createdBlog.author, blog.author)
 
       const totalBlogs = await Blog.countDocuments()
-      assert.strictEqual(totalBlogs, mocData.listWithTwoBlogs.length + 1)
+      assert.strictEqual(totalBlogs, mocData.blogsData.listWithTwoBlogs.length + 1)
     })
 
     test('should set default value of likes to 0 if not provided', async () => {
-      const blog = mocData.blogWithuotLikesProperty
+      const blog = mocData.blogsData.blogWithuotLikesProperty
 
       const response = await api
         .post('/api/blogs')
@@ -67,7 +67,7 @@ describe('API tests Blog', () => {
     })
 
     test('should respond with status code 400 if title is missing', async () => {
-      const blog = mocData.blogWithuotTitleProperty
+      const blog = mocData.blogsData.blogWithuotTitleProperty
 
       const response = await api
         .post('/api/blogs')
@@ -78,7 +78,7 @@ describe('API tests Blog', () => {
     })
 
     test('should respond with status code 400 if url is missing', async () => {
-      const blog = mocData.blogWithuotUrlProperty
+      const blog = mocData.blogsData.blogWithuotUrlProperty
 
       const response = await api
         .post('/api/blogs')
@@ -91,20 +91,20 @@ describe('API tests Blog', () => {
 
   describe('DELETE /api/blogs/:id', () => {
     test('should delete a blog post', async () => {
-      const blog = mocData.listWithTwoBlogs[0]
+      const blog = mocData.blogsData.listWithTwoBlogs[0]
 
       await api
         .delete(`/api/blogs/${blog._id}`)
         .expect(204)
 
       const totalBlogs = await Blog.countDocuments()
-      assert.strictEqual(totalBlogs, mocData.listWithTwoBlogs.length - 1)
+      assert.strictEqual(totalBlogs, mocData.blogsData.listWithTwoBlogs.length - 1)
     })
   })
 
   describe('PUT /api/blogs/:id', () => {
     test('should update the number of likes for a blog post', async () => {
-      const blogToUpdate = mocData.listWithTwoBlogs[0]
+      const blogToUpdate = mocData.blogsData.listWithTwoBlogs[0]
       const updatedLikes = blogToUpdate.likes + 1
 
       const blog = {

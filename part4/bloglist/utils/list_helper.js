@@ -18,6 +18,7 @@ const favoriteBlog = (blogs) => {
     const favoriteBlog = {
         title: blogWithMostLikes.title,
         author: blogWithMostLikes.author,
+        url: blogWithMostLikes.url,
         likes: blogWithMostLikes.likes
     }
 

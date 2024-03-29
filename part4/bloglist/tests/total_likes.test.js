@@ -1,12 +1,12 @@
 const { test, describe } = require('node:test')
 const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
-const mocData = require('../utils/moc_data')
+const mocData = require('./test_moc_data')
 
 describe('total likes', () => {
     const emptyArray = []
-    const listWithOneBlog = mocData.listWithOneBlog
-    const manyBlogs = mocData.blogs
+    const listWithOneBlog = mocData.blogsData.listWithOneBlog
+    const manyBlogs = mocData.blogsData.blogs
 
     test('of empty list is zero', () => {
         const result = listHelper.totalLikes(emptyArray)

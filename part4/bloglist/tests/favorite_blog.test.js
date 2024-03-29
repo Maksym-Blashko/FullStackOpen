@@ -1,15 +1,15 @@
 const { test, describe } = require('node:test')
 const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
-const mocData = require('../utils/moc_data')
+const mocData = require('./test_moc_data')
 
 describe('favorite blog', () => {
     const emptyArray = []
-    const listWithOneBlog = mocData.listWithOneBlog
-    const manyBlogs = mocData.blogs
+    const listWithOneBlog = mocData.blogsData.listWithOneBlog
+    const manyBlogs = mocData.blogsData.blogs
 
-    const favoriteFromManyBlogs = mocData.favoriteFromManyBlogs
-    const favoriteFromOneBlog = mocData.favoriteFromOneBlog
+    const favoriteFromManyBlogs = mocData.blogsData.favoriteFromManyBlogs
+    const favoriteFromOneBlog = mocData.blogsData.favoriteFromOneBlog
 
     test('of empty list is returned null', () => {
         const result = listHelper.favoriteBlog(emptyArray)
