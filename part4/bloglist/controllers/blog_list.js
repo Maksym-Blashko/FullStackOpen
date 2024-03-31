@@ -1,6 +1,15 @@
 const blogListRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        return authorization.substring(7)
+    }
+    return null
+}
 
 blogListRouter.get('/', async (request, response, next) => {
     try {
@@ -13,18 +22,26 @@ blogListRouter.get('/', async (request, response, next) => {
 
 blogListRouter.post('/', async (request, response, next) => {
     try {
+        const token = getTokenFrom(request)
+        if (!token) {
+            return response.status(401).json({ error: 'Unauthorized: Missing token' })
+        }
+
+        const decodedToken = jwt.verify(token, process.env.SECRET)
+        if (!decodedToken.id) {
+            return response.status(401).json({ error: 'Unauthorized: Invalid token' })
+        }
+
+        const user = await User.findById(decodedToken.id)
+        if (!user) {
+            return response.status(401).json({ error: 'Unauthorized: User not found' })
+        }
+
         if (request.body.title === undefined) {
             return response.status(400).json({ error: 'Bad Request: Missing title' })
         }
         if (request.body.url === undefined) {
             return response.status(400).json({ error: 'Bad Request: Missing url' })
-        }
-
-        let user
-        if (request.body.userId) {
-            user = await User.findById(request.body.userId)
-        } else {
-            user = await User.findOne({})
         }
 
         const blog = new Blog({

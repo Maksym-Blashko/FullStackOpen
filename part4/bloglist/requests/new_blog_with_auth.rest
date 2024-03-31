@@ -1,0 +1,10 @@
+post http://localhost:3001/api/blogs 
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2MDU2N2Y4OGExYzY4YmYxZjExYzlhMiIsImlhdCI6MTcxMTg5NjQxNH0.K78JQiA1_CBSolBSuG9Y7chYZvl2Fb4GIybthUmBYmw
+
+{
+"title": "blog with auth token", 
+"author": "maksym", 
+"url": "http://google.com", 
+"likes": 123
+}
