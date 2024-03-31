@@ -19,7 +19,7 @@ blogListRouter.post('/', async (request, response, next) => {
             return response.status(401).json({ error: 'Unauthorized: Invalid token' })
         }
 
-        const user = await User.findById(decodedToken.id)
+        const user = request.user
         if (!user) {
             return response.status(401).json({ error: 'Unauthorized: User not found' })
         }
@@ -63,7 +63,7 @@ blogListRouter.delete('/:id', async (request, response, next) => {
             return response.status(401).json({ error: 'Token missing or invalid' })
         }
 
-        const user = await User.findById(decodedToken.id)
+        const user = request.user
         if (!user || !blog.user || blog.user.toString() !== user.id) {
             return response.status(403).json({ error: 'You are not authorized to delete this blog' })
         }
