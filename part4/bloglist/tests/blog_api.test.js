@@ -123,6 +123,17 @@ describe('API tests Blog', () => {
 
       assert.strictEqual(response.body.error, 'Bad Request: Missing url')
     })
+
+    test('should return 401 if token is not provided', async () => {
+      const blog = mocData.blogsData.listWithOneBlog[0]
+
+      const response = await api
+        .post('/api/blogs')
+        .send(blog)
+        .expect(401)
+
+      assert.strictEqual(response.body.error, 'token missing or invalid')
+    })
   })
 
   describe('DELETE /api/blogs/:id', () => {
